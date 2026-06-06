@@ -1,0 +1,28 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: purplle_intelligence_api
+
+    ports:
+      - "8000:8000" # FastAPI backend
+      - "8501:8501" # Streamlit dashboard (Added)
+
+    volumes:
+      - ./store_layout.json:/app/store_layout.json
+      - ./data:/app/data
+
+    environment:
+      - TZ=UTC
+      - PORT=8501 # Streamlit port variable for run.sh (Added)
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

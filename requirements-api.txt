@@ -1,0 +1,15 @@
+# Web Framework & Server
+fastapi>=0.103.0
+uvicorn[standard]>=0.23.2
+
+# Data Validation & Database
+pydantic>=2.3.0
+sqlalchemy>=2.0.20
+
+# Dashboard UI (CRITICAL ADDITIONS)
+streamlit>=1.31.0
+requests>=2.31.0
+
+# Testing (Optional but good for grading)
+pytest>=7.4.0
+httpx>=0.24.0

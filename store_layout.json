@@ -1,0 +1,713 @@
+{
+  "_meta": {
+    "coordinate_space": {
+      "width": 1920,
+      "height": 1080,
+      "note": "Polygons are in 1080p pixel space to match 1080p/15fps clips. detect.py centroids and zones.py point-in-polygon MUST use this same space. RECALIBRATE corner coords against a real frame from each camera before final submission."
+    },
+    "billing_identification": "A zone is the billing/checkout zone iff zone_type=='BILLING' (also flagged is_billing=true and named by each store's billing_zone_id). Conversion correlation MUST key on this, never on a hardcoded zone name.",
+    "pos_store_mapping_note": "pos_transactions.csv uses store_id='ST1008' while the pipeline emits 'STORE_BLR_00x'. correlation.py MUST translate via each store's 'pos_store_id'. # VERIFY which BLR store ST1008 actually is."
+  },
+  "STORE_BLR_001": {
+    "name": "Bengaluru Flagship",
+    "city": "Bengaluru",
+    "pos_store_id": "ST1008",
+    "open_hours": {
+      "mon_sat": "10:00-21:00",
+      "sun": "11:00-20:00",
+      "tz": "Asia/Kolkata"
+    },
+    "billing_zone_id": "CASH_COUNTER",
+    "cameras": {
+      "CAM_ENTRY_01": {
+        "coverage": [
+          "ENTRY"
+        ]
+      },
+      "CAM_FLOOR_01": {
+        "coverage": [
+          "WALL_UNITS_LEFT",
+          "WALL_UNITS_TOP_LEFT",
+          "WALL_UNITS_TOP_RIGHT",
+          "WALL_UNITS_RIGHT",
+          "MK_GONDOLA_01",
+          "MK_GONDOLA_02",
+          "MAKEUP_UNIT_01",
+          "MAKEUP_UNIT_02"
+        ]
+      },
+      "CAM_CHECKOUT_01": {
+        "coverage": [
+          "CASH_COUNTER"
+        ]
+      }
+    },
+    "zones": {
+      "ENTRY": {
+        "zone_type": "THRESHOLD",
+        "is_billing": false,
+        "is_revenue_zone": false,
+        "polygon": [
+          {
+            "x": 820,
+            "y": 980
+          },
+          {
+            "x": 1100,
+            "y": 980
+          },
+          {
+            "x": 1100,
+            "y": 1080
+          },
+          {
+            "x": 820,
+            "y": 1080
+          }
+        ]
+      },
+      "CASH_COUNTER": {
+        "zone_type": "BILLING",
+        "is_billing": true,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 820,
+            "y": 40
+          },
+          {
+            "x": 1120,
+            "y": 40
+          },
+          {
+            "x": 1120,
+            "y": 210
+          },
+          {
+            "x": 820,
+            "y": 210
+          }
+        ]
+      },
+      "MAKEUP_UNIT_01": {
+        "zone_type": "MAKEUP",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 1180,
+            "y": 420
+          },
+          {
+            "x": 1420,
+            "y": 420
+          },
+          {
+            "x": 1420,
+            "y": 560
+          },
+          {
+            "x": 1180,
+            "y": 560
+          }
+        ]
+      },
+      "MAKEUP_UNIT_02": {
+        "zone_type": "MAKEUP",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 1180,
+            "y": 600
+          },
+          {
+            "x": 1420,
+            "y": 600
+          },
+          {
+            "x": 1420,
+            "y": 740
+          },
+          {
+            "x": 1180,
+            "y": 740
+          }
+        ]
+      },
+      "MK_GONDOLA_01": {
+        "zone_type": "GONDOLA",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 520,
+            "y": 760
+          },
+          {
+            "x": 820,
+            "y": 760
+          },
+          {
+            "x": 820,
+            "y": 980
+          },
+          {
+            "x": 520,
+            "y": 980
+          }
+        ]
+      },
+      "MK_GONDOLA_02": {
+        "zone_type": "GONDOLA",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 520,
+            "y": 480
+          },
+          {
+            "x": 820,
+            "y": 480
+          },
+          {
+            "x": 820,
+            "y": 700
+          },
+          {
+            "x": 520,
+            "y": 700
+          }
+        ]
+      },
+      "WALL_UNITS_LEFT": {
+        "zone_type": "WALL",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 40,
+            "y": 200
+          },
+          {
+            "x": 200,
+            "y": 200
+          },
+          {
+            "x": 200,
+            "y": 980
+          },
+          {
+            "x": 40,
+            "y": 980
+          }
+        ]
+      },
+      "WALL_UNITS_TOP_LEFT": {
+        "zone_type": "WALL",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 200,
+            "y": 40
+          },
+          {
+            "x": 800,
+            "y": 40
+          },
+          {
+            "x": 800,
+            "y": 170
+          },
+          {
+            "x": 200,
+            "y": 170
+          }
+        ]
+      },
+      "WALL_UNITS_TOP_RIGHT": {
+        "zone_type": "WALL",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 1140,
+            "y": 40
+          },
+          {
+            "x": 1720,
+            "y": 40
+          },
+          {
+            "x": 1720,
+            "y": 170
+          },
+          {
+            "x": 1140,
+            "y": 170
+          }
+        ]
+      },
+      "WALL_UNITS_RIGHT": {
+        "zone_type": "WALL",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 1720,
+            "y": 200
+          },
+          {
+            "x": 1880,
+            "y": 200
+          },
+          {
+            "x": 1880,
+            "y": 980
+          },
+          {
+            "x": 1720,
+            "y": 980
+          }
+        ]
+      }
+    }
+  },
+  "STORE_BLR_002": {
+    "name": "Koramangala Express",
+    "city": "Bengaluru",
+    "pos_store_id": null,
+    "open_hours": {
+      "mon_sat": "10:00-21:00",
+      "sun": "11:00-20:00",
+      "tz": "Asia/Kolkata"
+    },
+    "billing_zone_id": "CASH_COUNTER",
+    "cameras": {
+      "CAM_ENTRY_01": {
+        "coverage": [
+          "ENTRY"
+        ]
+      },
+      "CAM_FLOOR_01": {
+        "coverage": [
+          "SALM",
+          "TFS",
+          "MINIMALIS",
+          "AQUALOGI",
+          "FOXTAL",
+          "JC",
+          "FAC",
+          "MARS_NYBAE",
+          "MENS",
+          "LOREAL",
+          "BEAUT",
+          "FRAGRANCE_NAIL",
+          "MAKEUP_UNIT_01",
+          "MAKEUP_UNIT_02",
+          "ACCES"
+        ]
+      },
+      "CAM_CHECKOUT_01": {
+        "coverage": [
+          "CASH_COUNTER"
+        ]
+      }
+    },
+    "zones": {
+      "ENTRY": {
+        "zone_type": "THRESHOLD",
+        "is_billing": false,
+        "is_revenue_zone": false,
+        "polygon": [
+          {
+            "x": 40,
+            "y": 840
+          },
+          {
+            "x": 280,
+            "y": 840
+          },
+          {
+            "x": 280,
+            "y": 1080
+          },
+          {
+            "x": 40,
+            "y": 1080
+          }
+        ]
+      },
+      "CASH_COUNTER": {
+        "zone_type": "BILLING",
+        "is_billing": true,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 1640,
+            "y": 360
+          },
+          {
+            "x": 1860,
+            "y": 360
+          },
+          {
+            "x": 1860,
+            "y": 620
+          },
+          {
+            "x": 1640,
+            "y": 620
+          }
+        ]
+      },
+      "SALM": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 180,
+            "y": 40
+          },
+          {
+            "x": 360,
+            "y": 40
+          },
+          {
+            "x": 360,
+            "y": 180
+          },
+          {
+            "x": 180,
+            "y": 180
+          }
+        ]
+      },
+      "TFS": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 370,
+            "y": 40
+          },
+          {
+            "x": 540,
+            "y": 40
+          },
+          {
+            "x": 540,
+            "y": 180
+          },
+          {
+            "x": 370,
+            "y": 180
+          }
+        ]
+      },
+      "MINIMALIS": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 760,
+            "y": 40
+          },
+          {
+            "x": 940,
+            "y": 40
+          },
+          {
+            "x": 940,
+            "y": 180
+          },
+          {
+            "x": 760,
+            "y": 180
+          }
+        ]
+      },
+      "AQUALOGI": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 950,
+            "y": 40
+          },
+          {
+            "x": 1120,
+            "y": 40
+          },
+          {
+            "x": 1120,
+            "y": 180
+          },
+          {
+            "x": 950,
+            "y": 180
+          }
+        ]
+      },
+      "FOXTAL": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 1130,
+            "y": 40
+          },
+          {
+            "x": 1290,
+            "y": 40
+          },
+          {
+            "x": 1290,
+            "y": 180
+          },
+          {
+            "x": 1130,
+            "y": 180
+          }
+        ]
+      },
+      "JC": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 1300,
+            "y": 40
+          },
+          {
+            "x": 1460,
+            "y": 40
+          },
+          {
+            "x": 1460,
+            "y": 180
+          },
+          {
+            "x": 1300,
+            "y": 180
+          }
+        ]
+      },
+      "FAC": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 300,
+            "y": 900
+          },
+          {
+            "x": 520,
+            "y": 900
+          },
+          {
+            "x": 520,
+            "y": 1040
+          },
+          {
+            "x": 300,
+            "y": 1040
+          }
+        ]
+      },
+      "MARS_NYBAE": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 660,
+            "y": 900
+          },
+          {
+            "x": 820,
+            "y": 900
+          },
+          {
+            "x": 820,
+            "y": 1040
+          },
+          {
+            "x": 660,
+            "y": 1040
+          }
+        ]
+      },
+      "MENS": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 830,
+            "y": 900
+          },
+          {
+            "x": 980,
+            "y": 900
+          },
+          {
+            "x": 980,
+            "y": 1040
+          },
+          {
+            "x": 830,
+            "y": 1040
+          }
+        ]
+      },
+      "LOREAL": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 1080,
+            "y": 900
+          },
+          {
+            "x": 1300,
+            "y": 900
+          },
+          {
+            "x": 1300,
+            "y": 1040
+          },
+          {
+            "x": 1080,
+            "y": 1040
+          }
+        ]
+      },
+      "BEAUT": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 1310,
+            "y": 900
+          },
+          {
+            "x": 1460,
+            "y": 900
+          },
+          {
+            "x": 1460,
+            "y": 1040
+          },
+          {
+            "x": 1310,
+            "y": 1040
+          }
+        ]
+      },
+      "FRAGRANCE_NAIL": {
+        "zone_type": "SHELF",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 500,
+            "y": 360
+          },
+          {
+            "x": 640,
+            "y": 360
+          },
+          {
+            "x": 640,
+            "y": 560
+          },
+          {
+            "x": 500,
+            "y": 560
+          }
+        ]
+      },
+      "MAKEUP_UNIT_01": {
+        "zone_type": "MAKEUP",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 820,
+            "y": 300
+          },
+          {
+            "x": 1000,
+            "y": 300
+          },
+          {
+            "x": 1000,
+            "y": 440
+          },
+          {
+            "x": 820,
+            "y": 440
+          }
+        ]
+      },
+      "MAKEUP_UNIT_02": {
+        "zone_type": "MAKEUP",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 820,
+            "y": 460
+          },
+          {
+            "x": 1000,
+            "y": 460
+          },
+          {
+            "x": 1000,
+            "y": 600
+          },
+          {
+            "x": 820,
+            "y": 600
+          }
+        ]
+      },
+      "ACCES": {
+        "zone_type": "BRAND",
+        "is_billing": false,
+        "is_revenue_zone": true,
+        "polygon": [
+          {
+            "x": 1660,
+            "y": 720
+          },
+          {
+            "x": 1820,
+            "y": 720
+          },
+          {
+            "x": 1820,
+            "y": 860
+          },
+          {
+            "x": 1660,
+            "y": 860
+          }
+        ]
+      }
+    }
+  }
+}

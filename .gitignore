@@ -1,0 +1,30 @@
+# 1. Ignore heavy raw datasets
+raw_videos/
+resouces/
+data/
+
+# 2. Ignore global video files
+*.avi
+*.mkv
+*.mov
+*.mp4
+
+# 3. Keep only the production database
+*.db
+!app.db
+
+# 4. Ignore heavy machine learning models
+*.pt
+*.pth
+*.onnx
+
+# 5. Ignore local caches and virtual environments
+__pycache__/
+*.pyc
+venv/
+.venv/
+.env
+
+# 6. OS generated files
+.DS_Store
+Thumbs.db
