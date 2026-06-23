@@ -38,16 +38,26 @@ def load_store_layout(layout_path: str = "store_layout.json") -> None:
         logger.error(f"Failed to parse {layout_path}: {str(e)}")
         return
         
-    # TODO: Validate parsing logic against actual store_layout.json schema
-    # Current assumption: {"STORE_BLR_002": {"zone_1": {"coordinates": [[x,y], ...]}}}
     for store_id, store_data in raw_layouts.items():
+        if store_id == "_meta":
+            continue
+
         _STORE_LAYOUTS_CACHE[store_id] = {}
         zones = store_data.get("zones", {})
-        for zone_id, coords in zones.items():
+        
+        for zone_id, zone_data in zones.items():
             try:
-                _STORE_LAYOUTS_CACHE[store_id][zone_id] = [
-                    (float(pt["x"]), float(pt["y"])) for pt in coords
-                ]
+                # Correctly target the 'polygon' list inside the zone dictionary
+                coords = zone_data.get("polygon", [])
+                
+                parsed_coords = []
+                for pt in coords:
+                    if isinstance(pt, dict) and "x" in pt and "y" in pt:
+                        parsed_coords.append((float(pt["x"]), float(pt["y"])))
+                
+                if parsed_coords:
+                    _STORE_LAYOUTS_CACHE[store_id][zone_id] = parsed_coords
+                
             except Exception as e:
                 logger.error(f"Failed to parse coordinates for {zone_id}: {e}")
 
@@ -92,7 +102,7 @@ def resolve_coordinate_to_zone(store_id: str, x: float, y: float) -> Optional[st
 
 def is_billing_zone(zone_id: str) -> bool:
     """Helper to identify billing zones for queue metrics."""
-    return "billing" in zone_id.lower() or "checkout" in zone_id.lower()
+    return "billing" in zone_id.lower() or "checkout" in zone_id.lower() or "cash" in zone_id.lower()
 
 
 def calculate_session_dwell_times(db: Session, session_id: str) -> Dict[str, float]:
@@ -101,18 +111,18 @@ def calculate_session_dwell_times(db: Session, session_id: str) -> Dict[str, flo
     Handles duplicated events, negative durations, and orphaned entry tracks.
     """
     stmt = (
-    select(Event)
-    .where(
-        and_(
-            Event.session_id == session_id,
-            Event.event_type.in_([
-                EventTypes.ZONE_ENTERED,
-                EventTypes.ZONE_EXITED
-            ])
+        select(Event)
+        .where(
+            and_(
+                Event.session_id == session_id,
+                Event.event_type.in_([
+                    EventTypes.ZONE_ENTERED,
+                    EventTypes.ZONE_EXITED
+                ])
+            )
         )
+        .order_by(Event.event_timestamp.asc())
     )
-    .order_by(Event.event_timestamp.asc())
- )
     
     events = db.execute(stmt).scalars().all()
     if not events:

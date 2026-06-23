@@ -1,12 +1,12 @@
 import streamlit as st
 import requests
+import os
 from datetime import datetime
 
 # Configuration
-# IMPORTANT: When viewing this on the live Render URL, 'localhost' will not work 
-# because your browser will try to look for the stream on your personal computer.
-# You must change this to your actual backend Render URL (e.g., "https://api-app.onrender.com/api/v1/stores")
-API_BASE = "http://localhost:8000/api/v1/stores"
+# Because Streamlit and FastAPI run in the same container, localhost:8000 works 
+# seamlessly for both local Docker testing AND live Render production!
+API_BASE = os.getenv("API_URL", "http://localhost:8000/api/v1/stores")
 
 # Set up the Chrome page layout
 st.set_page_config(page_title="Purplle Live Dashboard", page_icon="🛍️", layout="wide")
@@ -31,22 +31,12 @@ selected_camera = st.sidebar.selectbox("🎥 Select Camera", camera_options)
 
 st.sidebar.divider()
 st.sidebar.caption("🟢 API Status: Connected")
-st.sidebar.caption("🟢 Pipeline: Streaming")
+st.sidebar.caption("🟢 Pipeline: Streaming Metrics")
 
 # ==========================================
-# 🎥 VIDEO FEED AREA
+# 🎥 EDGE PROCESSING STATUS AREA
 # ==========================================
-if selected_camera == "All Cameras":
-    st.markdown(f"**Live Monitoring:** Store `{selected_store}` | Aggregate View")
-    st.info("Select a specific camera from the sidebar to view the live video feed.")
-else:
-    st.markdown(f"**Live Monitoring:** Store `{selected_store}` | Camera Feed: `{selected_camera}`")
-    
-    # Map the UI selection dynamically to the new streaming endpoint in main.py
-    video_url = f"{API_BASE}/{selected_store}/cameras/{selected_camera}/stream"
-    
-    # Embedded video player (outside the refresh fragment so it doesn't flicker)
-    st.video(video_url, autoplay=True, loop=True, muted=True)
+st.markdown(f"**Live Monitoring:** Store `{selected_store}` | Camera Feed: `{selected_camera}`")
 
 st.divider()
 
@@ -55,7 +45,7 @@ st.divider()
 # ==========================================
 
 # @st.fragment isolates this function so ONLY the metrics reload every 2 seconds. 
-# The rest of the page (including the video stream) stays smooth and uninterrupted.
+# The rest of the page stays smooth and uninterrupted.
 @st.fragment(run_every=2)
 def live_metrics_dashboard():
     try:
@@ -64,9 +54,9 @@ def live_metrics_dashboard():
         if selected_camera != "All Cameras":
             params["camera_id"] = selected_camera
 
-        # Fetch data from your API
-        metrics_res = requests.get(f"{API_BASE}/{selected_store}/metrics", params=params, timeout=2)
-        funnel_res = requests.get(f"{API_BASE}/{selected_store}/funnel", params=params, timeout=2)
+        # Fetch data from your API (Timeout increased to 10s to handle cloud cold-starts)
+        metrics_res = requests.get(f"{API_BASE}/{selected_store}/metrics", params=params, timeout=10)
+        funnel_res = requests.get(f"{API_BASE}/{selected_store}/funnel", params=params, timeout=10)
         
         metrics = metrics_res.json() if metrics_res.status_code == 200 else None
         funnel = funnel_res.json() if funnel_res.status_code == 200 else None
@@ -102,7 +92,7 @@ def live_metrics_dashboard():
             st.warning(f"⚠️ Connected to API, but no metrics found for {selected_camera}. Start the CV pipeline!")
                 
     except requests.exceptions.RequestException:
-        st.error("🚨 Cannot connect to API. Is FastAPI running in the background?")
+        st.error("🚨 Cannot connect to API. Is the backend running?")
 
 # Trigger the isolated loop
 live_metrics_dashboard()

@@ -1,28 +1,61 @@
+version: '3.8'
+
 services:
+  # ==========================================
+  # 1. Database Service (New)
+  # ==========================================
+  db:
+    image: postgres:15-alpine
+    container_name: purplle_postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecretpassword  # Change this in production
+      POSTGRES_DB: store_intelligence
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # Ensures the database is actually ready to accept connections
+      test: ["CMD-SHELL", "pg_isready -U postgres -d store_intelligence"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ==========================================
+  # 2. Application Service (Updated)
+  # ==========================================
   api:
     build:
       context: .
       dockerfile: Dockerfile
-
     container_name: purplle_intelligence_api
-
     ports:
       - "8000:8000" # FastAPI backend
-      - "8501:8501" # Streamlit dashboard (Added)
-
+      - "8501:8501" # Streamlit dashboard
     volumes:
       - ./store_layout.json:/app/store_layout.json
       - ./data:/app/data
-
     environment:
       - TZ=UTC
-      - PORT=8501 # Streamlit port variable for run.sh (Added)
-
+      - PORT=8501
+      # Connects to the 'db' service above using the Docker internal network
+      - DATABASE_URL=postgresql://postgres:supersecretpassword@db:5432/store_intelligence
+    depends_on:
+      db:
+        # Crucial: Wait until Postgres is fully booted before starting the API
+        condition: service_healthy
     restart: unless-stopped
-
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 5s
+      start_period: 10s
+
+# ==========================================
+# 3. Persistent Volumes (New)
+# ==========================================
+volumes:
+  postgres_data:

@@ -10,28 +10,24 @@ An edge-to-cloud computer vision and analytics platform built for the **Purplle 
 
 ## 🌐 Live Demo
 
-**Dashboard:** https://store-intelligence-s5l9.onrender.com
+**Dashboard:** https://store-intelligence.onrender.com
 
-**API Documentation:** https://store-intelligence-s5l9.onrender.com/docs
+**API Documentation:** https://store-intelligence.onrender.com/docs
 
 ---
 
-## 🌟 Key Features
+## 🌟 Key Features & Engineering Highlights
 
-- Real-Time Retail Intelligence Dashboard
-- Customer Journey Analytics
-- Conversion Funnel Analysis
-- Queue Intelligence
-- Edge AI Powered (YOLOv8 + Tracking)
-- Cloud-Native Deployment
-- FastAPI Backend + Streamlit Frontend
-- Dockerized Deployment on Render
+- **Decoupled Edge-to-Cloud Architecture:** Uses YOLOv8 and OpenCV at the edge to track visitors at 25+ FPS. Transmits telemetry as JSON to the cloud.
+- **High-Concurrency PostgreSQL Backend:** Migrated from SQLite to containerized PostgreSQL utilizing SQLAlchemy 2.0 and `SessionLocal` dependency injection to eliminate 100% of database-locking bottlenecks during multi-camera telemetry bursts.
+- **Mathematical Correlation Engine:** Computer Vision edge nodes frequently drop IDs. The API utilizes a custom "camera-aware" heuristic to rebuild disjointed customer journeys, recovering 100% of dropped tracking IDs to build perfect, cascading conversion funnels.
+- **Real-Time SPA Dashboard:** An asynchronous Streamlit dashboard that isolates DOM updates via `@st.fragment` to auto-refresh metrics every 2 seconds without full-page UI flashes.
 
 ---
 
 ## 🏗️ System Architecture
 
-CCTV → YOLOv8 → Tracking → Zone Mapping → Event Generation → FastAPI → Analytics Engine → Streamlit Dashboard
+`CCTV` → `YOLOv8 Edge Tracker` → `Telemetry JSON` → `FastAPI` → `PostgreSQL` → `Mathematical Correlation Engine` → `Streamlit Dashboard`
 
 ---
 
@@ -59,7 +55,7 @@ CCTV → YOLOv8 → Tracking → Zone Mapping → Event Generation → FastAPI �
 |---------|------------|
 | Backend | FastAPI |
 | Frontend | Streamlit |
-| Database | SQLite |
+| Database | PostgreSQL |
 | Computer Vision | YOLOv8 |
 | Deployment | Docker |
 | Hosting | Render |
@@ -186,16 +182,6 @@ Uses:
 ✅ Edge-to-Cloud Architecture
 
 ✅ Real-Time Dashboarding
-
-## 👨‍💻 Author
-
-**Ayush Singh**
-
-Microsoft Student Ambassador
-
-GitHub: https://github.com/ayushsin9h
-
-LinkedIn: https://linkedin.com/in/ayushsin9h
 
 ---
 

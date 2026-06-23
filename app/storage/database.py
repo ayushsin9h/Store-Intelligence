@@ -1,17 +1,18 @@
 # app/storage/database.py
-
+import os
 from datetime import datetime
 from typing import Optional, Any
 from sqlalchemy import create_engine, String, Float, DateTime, JSON, Boolean, Integer, Index
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
-# 1. Database Configuration
-SQLALCHEMY_DATABASE_URL = "sqlite:///./data/store_intelligence.db"
-
-# check_same_thread=False is strictly required for SQLite with FastAPI
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+SQLALCHEMY_DATABASE_URL = os.getenv(
+    "DATABASE_URL", 
+    "postgresql://postgres:yourpassword@localhost:5432/store_intelligence"
 )
+
+# PostgreSQL natively handles multi-threading and connection pooling.
+# We remove the SQLite "check_same_thread" hack.
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

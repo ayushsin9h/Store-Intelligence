@@ -5,6 +5,7 @@ uvicorn[standard]>=0.23.2
 # Data Validation & Database
 pydantic>=2.3.0
 sqlalchemy>=2.0.20
+psycopg2-binary>=2.9.9
 
 # Dashboard UI (CRITICAL ADDITIONS)
 streamlit>=1.31.0
