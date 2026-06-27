@@ -10,9 +10,9 @@ An edge-to-cloud computer vision and analytics platform built for the **Purplle 
 
 ## 🌐 Live Demo
 
-**Dashboard:** https://store-intelligence.onrender.com
+**Dashboard:** https://store-intelligence-ai.onrender.com
 
-**API Documentation:** https://store-intelligence.onrender.com/docs
+**API Documentation:** https://store-intelligence-ai.onrender.com/docs
 
 ---
 
